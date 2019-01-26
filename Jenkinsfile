@@ -3,11 +3,12 @@ pipeline {
 	environment {
 		MSBuild = tool 'MSBuild'
 		DevPath = 'D:\\Work_Jenkins\\WebAppSimpleDev'
-		
+		OPT_DEV = 'DEV'
+		OPT_PROD = 'PROD'
 	}	
 	parameters {
 		//string(name: 'DevPath', defaultValue: 'D:\\Work_Jenkins\\WebAppSimpleDev', description: 'DevPath')
-		choice(name: 'DEV_PROD', choices: ['DEV', 'PROD'], description: '')
+		choice(name: 'DEV_PROD', choices: [env.OPT_DEV, env.OPT_PROD], description: '')
 	}
 	
 	options {
@@ -28,7 +29,7 @@ pipeline {
 		}
 		stage('Copy DEV') {
 			when {                
-                equals expected: 'DEV', actual: params.DEV_PROD
+                equals expected: env.OPT_DEV, actual: params.DEV_PROD
             }
 			steps {
 				bat "IF EXIST \"${env.DevPath}\" RD /Q /S \"${env.DevPath}\""
@@ -37,7 +38,7 @@ pipeline {
 		}
 		stage('Copy PROD') {
 			when {                
-                equals expected: 'PROD', actual: params.DEV_PROD
+                equals expected: env.OPT_PROD, actual: params.DEV_PROD
             }
 			steps {
 				echo 'Copy prod...'
