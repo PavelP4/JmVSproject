@@ -10,7 +10,7 @@ pipeline {
 		stage('Build') {
 			steps {
 				echo 'Building...'
-				bat "\"${tool 'MSBuild.exe'}\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"				
+				bat "\"${tool name: 'MSBuild', type: 'hudson.plugins.msbuild.MsBuildInstallation'}\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"				
 			}			
 		}
     }
