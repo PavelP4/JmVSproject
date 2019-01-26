@@ -8,12 +8,13 @@ pipeline {
 	}	
 	parameters {
 		//string(name: 'DevPath', defaultValue: 'D:\\Work_Jenkins\\WebAppSimpleDev', description: 'DevPath')
-		choice(name: 'DEV_PROD', choices: [env.OPT_DEV, env.OPT_PROD], description: '')
+		choice(name: 'DEV_PROD', choices: ['DEV', 'PROD'], description: '')
 	}
-	
+	/*
 	options {
 		skipDefaultCheckout()
 	}
+	*/
     stages {
 		stage('Restore packages') {
 			steps {
