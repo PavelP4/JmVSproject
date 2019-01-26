@@ -2,6 +2,7 @@ pipeline {
     agent any
 	environment {
 		MSBuild = tool 'MSBuild'
+		TestPath = 'D:\\Work_Jenkins\\WebAppSimplePublish'
 		DevPath = 'D:\\Work_Jenkins\\WebAppSimpleDev'
 		ProdPath = 'D:\\Work_Jenkins\\WebAppSimpleProd'
 		OPT_DEV = 'DEV'
@@ -44,7 +45,10 @@ pipeline {
             }
 			steps {
 				echo 'Copy prod...'
-				fileOperations([folderDeleteOperation(env.ProdPath)])				
+				fileOperations([
+					folderDeleteOperation(env.ProdPath), 
+					folderCopyOperation(destinationFolderPath: env.ProdPath, sourceFolderPath: env.TestPath)
+					])				
 			}
 		}
     }
