@@ -1,7 +1,7 @@
 pipeline {
     agent any
 	environment {
-		MSBuild = tool 'MSBuild.exe'msbuild.exe
+		MSBuild = ${tool 'MSBuild.exe'}msbuild.exe
 	}
 	options {
 		skipDefaultCheckout()
