@@ -2,7 +2,9 @@ pipeline {
     agent any
 	environment {
 		MSBuild = tool 'MSBuild.exe'
-		MSBuild15 = tool(name: 'MSBuild.exe', type: 'hudson.plugins.msbuild.MsBuildInstallation')
+	}
+	parameters {
+		string(name: 'DevPath', defaultValue: 'D:\Work_Jenkins\WebAppSimpleDev', description: 'DevPath')
 	}
 	options {
 		skipDefaultCheckout()
@@ -14,12 +16,17 @@ pipeline {
 				//bat 'nuget restore WebAppSimple.sln'
 			}
 		}  
-		stage('Build') {
+		stage('Build&Deploy for test') {
 			steps {
-				echo 'Building...'
-				//bat "\"${MSBuild}msbuild.exe\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"				
-				bat "\"${MSBuild15}\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"				
+				echo 'Building...'				
+				bat "\"${MSBuild}msbuild\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"								
 			}			
+		}
+		stage('Copy') {
+			steps {
+				bat "IF EXIST \"${params.DevPath}\" RD /Q /S \"${params.DevPath}\""
+				bat "XCOPY \"${WORKSPACE}\WebAppSimple\*\" \"${params.DevPath}\" /s /e /y /i"
+			}
 		}
     }
 	/*
