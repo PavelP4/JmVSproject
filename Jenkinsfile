@@ -3,6 +3,7 @@ pipeline {
 	environment {
 		MSBuild = tool 'MSBuild'
 		DevPath = 'D:\\Work_Jenkins\\WebAppSimpleDev'
+		ProdPath = 'D:\\Work_Jenkins\\WebAppSimpleProd'
 		OPT_DEV = 'DEV'
 		OPT_PROD = 'PROD'
 	}	
@@ -30,7 +31,7 @@ pipeline {
 		}
 		stage('Copy DEV') {
 			when {                
-                equals expected: ${env.OPT_DEV}, actual: params.DEV_PROD
+                equals expected: 'DEV', actual: params.DEV_PROD
             }
 			steps {
 				bat "IF EXIST \"${env.DevPath}\" RD /Q /S \"${env.DevPath}\""
@@ -39,10 +40,13 @@ pipeline {
 		}
 		stage('Copy PROD') {
 			when {                
-                equals expected: ${env.OPT_DEV}, actual: params.DEV_PROD
+                equals expected: 'PROD', actual: params.DEV_PROD
             }
 			steps {
 				echo 'Copy prod...'
+				fileOperations {          
+					folderDeleteOperation(env.ProdPath)          
+				}
 			}
 		}
     }
