@@ -5,12 +5,12 @@ pipeline {
 		DevPath = 'D:\\Work_Jenkins\\WebAppSimpleDev'
 		OPT_DEV = 'DEV'
 		OPT_PROD = 'PROD'
-	}	
+	}/*	
 	parameters {
 		//string(name: 'DevPath', defaultValue: 'D:\\Work_Jenkins\\WebAppSimpleDev', description: 'DevPath')
 		choice(name: 'DEV_PROD', choices: ['DEV', 'PROD'], description: '')
 	}
-	/*
+	
 	options {
 		skipDefaultCheckout()
 	}
