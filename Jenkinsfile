@@ -44,9 +44,7 @@ pipeline {
             }
 			steps {
 				echo 'Copy prod...'
-				fileOperations {          
-					folderDeleteOperation('${env.ProdPath}')          
-				}
+				fileOperations([folderDeleteOperation(env.ProdPath)])				
 			}
 		}
     }
