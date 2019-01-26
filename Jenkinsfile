@@ -2,10 +2,14 @@ pipeline {
     agent any
 	environment {
 		MSBuild = tool 'MSBuild'
-	}
+		DevPath = 'D:\\Work_Jenkins\\WebAppSimpleDev'
+		
+	}	
 	parameters {
-		string(name: 'DevPath', defaultValue: 'D:\\Work_Jenkins\\WebAppSimpleDev', description: 'DevPath')
+		//string(name: 'DevPath', defaultValue: 'D:\\Work_Jenkins\\WebAppSimpleDev', description: 'DevPath')
+		choice(name: 'DEV_PROD', choices: ['DEV', 'PROD'], description: '')
 	}
+	
 	options {
 		skipDefaultCheckout()
 	}
@@ -22,10 +26,21 @@ pipeline {
 				bat "\"${MSBuild}\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"								
 			}			
 		}
-		stage('Copy') {
+		stage('Copy DEV') {
+			when {                
+                equals expected: 'DEV', actual: params.DEV_PROD
+            }
 			steps {
-				bat "IF EXIST \"${params.DevPath}\" RD /Q /S \"${params.DevPath}\""
-				bat "XCOPY \"${WORKSPACE}\\WebAppSimple\\*\" \"${params.DevPath}\" /s /e /y /i"
+				bat "IF EXIST \"${env.DevPath}\" RD /Q /S \"${env.DevPath}\""
+				bat "XCOPY \"${WORKSPACE}\\WebAppSimple\\*\" \"${env.DevPath}\" /s /e /y /i"
+			}
+		}
+		stage('Copy PROD') {
+			when {                
+                equals expected: 'PROD', actual: params.DEV_PROD
+            }
+			steps {
+				echo 'Copy prod...'
 			}
 		}
     }
