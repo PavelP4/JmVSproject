@@ -25,7 +25,7 @@ pipeline {
 		stage('Copy') {
 			steps {
 				bat "IF EXIST \"${params.DevPath}\" RD /Q /S \"${params.DevPath}\""
-				bat "XCOPY \"${WORKSPACE}\WebAppSimple\*\" \"${params.DevPath}\" /s /e /y /i"
+				bat "XCOPY \"${WORKSPACE}\\WebAppSimple\\*\" \"${params.DevPath}\" /s /e /y /i"
 			}
 		}
     }
