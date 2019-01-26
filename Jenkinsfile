@@ -1,10 +1,22 @@
 pipeline {
     agent any
     stages {
-        stage('Hello') {
+		stage('Restore packages') {
 			steps {
-				echo 'Hello!!!'
+				bat 'nuget restore WebAppSimple.sln'
+			}
+		}
+        stage('Build') {
+			steps {
+				
+				
 			}			
-		}        
+		}
+		stage('Deploy') {
+			steps {
+				
+				
+			}			
+		}         
     }
 }
