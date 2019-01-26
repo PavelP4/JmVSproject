@@ -1,19 +1,23 @@
 pipeline {
     agent any
+	options {
+		skipDefaultCheckout()
+	}
     stages {
 		stage('Restore packages') {
 			steps {
 				echo 'Restoring packages...'
-				bat 'nuget restore WebAppSimple.sln'
+				//bat 'nuget restore WebAppSimple.sln'
 			}
 		}  
 		stage('Build') {
 			steps {
 				echo 'Building...'
-				bat "\"${tool name: 'MSBuild', type: 'hudson.plugins.msbuild.MsBuildInstallation'}\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"				
+				bat "\"${tool 'MSBuild'}\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"				
 			}			
 		}
     }
+	/*
 	post {
 		success {
 			echo 'Pipeline Succeeded'
@@ -25,4 +29,5 @@ pipeline {
 			echo 'Pipeline run marked unstable'
 		}
 	}
+	*/
 }
