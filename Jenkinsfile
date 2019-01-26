@@ -1,5 +1,8 @@
 pipeline {
     agent any
+	environment {
+		MSBuild = tool 'MSBuild.exe'
+	}
 	options {
 		skipDefaultCheckout()
 	}
@@ -13,7 +16,7 @@ pipeline {
 		stage('Build') {
 			steps {
 				echo 'Building...'
-				bat "\"${tool 'msbuild'}\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"				
+				bat "${MSBuild}msbuild.exe WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"				
 			}			
 		}
     }
