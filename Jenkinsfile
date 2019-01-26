@@ -5,18 +5,6 @@ pipeline {
 			steps {
 				bat 'nuget restore WebAppSimple.sln'
 			}
-		}
-        stage('Build') {
-			steps {
-				
-				
-			}			
-		}
-		stage('Deploy') {
-			steps {
-				
-				
-			}			
-		}         
+		}            
     }
 }
