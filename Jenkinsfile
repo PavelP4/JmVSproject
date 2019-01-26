@@ -1,7 +1,7 @@
 pipeline {
     agent any
 	environment {
-		MSBuild = tool 'MSBuild.exe'
+		MSBuild = tool 'MSBuild'
 	}
 	parameters {
 		string(name: 'DevPath', defaultValue: 'D:\\Work_Jenkins\\WebAppSimpleDev', description: 'DevPath')
@@ -19,7 +19,7 @@ pipeline {
 		stage('Build&Deploy for test') {
 			steps {
 				echo 'Building...'				
-				bat "\"${MSBuild}msbuild\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"								
+				bat "\"${MSBuild}\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"								
 			}			
 		}
 		stage('Copy') {
