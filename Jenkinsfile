@@ -5,6 +5,7 @@ pipeline {
 		TestPath = 'D:\\Work_Jenkins\\WebAppSimplePublish'
 		DevPath = 'D:\\Work_Jenkins\\WebAppSimpleDev'
 		ProdPath = 'D:\\Work_Jenkins\\WebAppSimpleProd'
+		BuildConf = 'Release'
 		OPT_DEV = 'DEV'
 		OPT_PROD = 'PROD'
 	}	
@@ -21,13 +22,22 @@ pipeline {
 		stage('Restore packages') {
 			steps {
 				echo 'Restoring packages...'
-				//bat 'nuget restore WebAppSimple.sln'
+				bat 'nuget restore WebAppSimple.sln'
 			}
 		}  
 		stage('Build&Deploy for test') {
 			steps {
-				echo 'Building...'				
-				bat "\"${MSBuild}\" WebAppSimple.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"								
+				echo 'Building...'		
+
+				script {
+					if (params.DEV_PROD == 'DEV') {
+						env.BuildConf = 'Debug'
+					} else {
+						env.BuildConf = 'Release'
+					}
+				}
+				
+				bat "\"${MSBuild}\" WebAppSimple.sln /p:Configuration=${env.BuildConf} /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /P:DeployOnBuild=True /P:PublishProfile=WASProfile"								
 			}			
 		}
 		stage('Copy DEV') {
@@ -52,7 +62,7 @@ pipeline {
 			}
 		}
     }
-	/*
+	
 	post {
 		success {
 			echo 'Pipeline Succeeded'
@@ -64,5 +74,5 @@ pipeline {
 			echo 'Pipeline run marked unstable'
 		}
 	}
-	*/
+	
 }
